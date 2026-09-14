@@ -35,9 +35,18 @@ export default function Navbar() {
         />
       </a>
 
-      <nav className={`navitems ${menuOpen ? "navitems-open" : ""}`}>
+      <nav
+        id="mobile-navigation"
+        className={`navitems ${
+          menuOpen ? "navitems-open" : ""
+        }`}
+      >
         {links.map((link) => (
-          <a key={link.name} href={link.url} onClick={() => setMenuOpen(false)}>
+          <a
+            key={link.name}
+            href={link.url}
+            onClick={closeMenu}
+          >
             {link.name}
           </a>
         ))}
@@ -45,7 +54,7 @@ export default function Navbar() {
         <a
           className="mobile-repo"
           href="https://github.com/kuwushagra/git-gud-osdc"
-          onClick={() => setMenuOpen(false)}
+          onClick={closeMenu}
         >
           Repo
         </a>
@@ -58,8 +67,8 @@ export default function Navbar() {
         Repo
       </a>
 
-
       <button
+        type="button"
         className={`menu-button ${
           menuOpen ? "menu-button-open" : ""
         }`}
@@ -70,12 +79,14 @@ export default function Navbar() {
             : "Open navigation menu"
         }
         aria-expanded={menuOpen}
+        aria-controls="mobile-navigation"
       >
-        <span className="menu-label">
-          MENU
-        </span>
+        <span className="menu-label">MENU</span>
 
-        <span className="menu-icon" aria-hidden="true">
+        <span
+          className="menu-icon"
+          aria-hidden="true"
+        >
           <span />
           <span />
           <span />
