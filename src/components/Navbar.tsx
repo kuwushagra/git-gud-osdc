@@ -1,7 +1,7 @@
 const links = [
   {
-    name: "REPO",
-    url: "https://github.com/osdc",
+    name: "HOME",
+    url: "/",
   },
   {
     name: "SOCIALS",
@@ -16,7 +16,7 @@ const links = [
 export default function Navbar() {
   return (
     <header className="navbar">
-      <a href="/" className="logo">
+      <a href="https://osdc.dev" className="logo">
         <img
           src="https://fossunited.org/files/osdc_logo.jpg"
           alt="OSDC"
@@ -35,8 +35,8 @@ export default function Navbar() {
       </nav>
 
       <a
-        className="hello-button"
-        href="/repo-link-here"
+        className="bigbutton"
+        href="https://github.com/kuwushagra/git-gud-osdc"
       >
         Repo
       </a>

@@ -4,6 +4,9 @@ import Navbar from "./components/Navbar";
 import Ticker from "./components/Ticker";
 import { useState } from "react";
 
+import gitgudheader from "./assets/images/gitgudheader.png";
+import octocat from "./assets/images/octocat.png";
+
 const containerVariants: Variants = {
   hidden: {},
   visible: {
@@ -41,6 +44,30 @@ const pages = [
     label: "Step Three",
     title: "Fork",
   },
+  {
+    label: "Step Four",
+    title: "Something",
+  },
+  {
+    label: "Step Five",
+    title: "Something",
+  },
+  {
+    label: "Step Six-",
+    title: "Something",
+  },
+  {
+    label: "-Seven :D",
+    title: "Something",
+  },
+  {
+    label: "Step Eight",
+    title: "Something",
+  },
+  {
+    label: "Step Nine",
+    title: "Something",
+  }
 ];
 
 function ArrowButton({
@@ -79,55 +106,6 @@ function HomePage({
 }) {
   return (
     <section className="page home-page">
-      <div className="background-cards">
-        <motion.div
-          className="background-card card-one"
-          initial={{
-            opacity: 0,
-            x: 100,
-            rotate: -12,
-          }}
-          animate={{
-            opacity: 1,
-            x: 0,
-            rotate: -7,
-          }}
-          transition={{
-            duration: 0.8,
-            delay: 0.2,
-            ease: "easeOut",
-          }}
-          whileHover={{
-            rotate: -4,
-            scale: 1.02,
-          }}
-        >
-        </motion.div>
-
-        <motion.div
-          className="background-card card-two"
-          initial={{
-            opacity: 0,
-            x: 120,
-            rotate: 14,
-          }}
-          animate={{
-            opacity: 1,
-            x: 0,
-            rotate: 8,
-          }}
-          transition={{
-            duration: 0.8,
-            delay: 0.35,
-            ease: "easeOut",
-          }}
-          whileHover={{
-            rotate: 4,
-            scale: 1.02,
-          }}
-        >
-        </motion.div>
-      </div>
 
       <motion.div
         className="main-card home-card"
@@ -147,65 +125,88 @@ function HomePage({
         <Navbar />
 
         <main>
-          <section className="hero">
-            <motion.div
-              className="hero-content"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <motion.div
-                className="hero-placeholder"
+        <section className="hero">
+          <motion.div
+            className="hero-content"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <div className="hero-left">
+              <motion.img
+                className="hero-small-image"
+                src={gitgudheader}
+                alt="header"
                 variants={itemVariants}
+              />
+
+              <motion.h1
+                variants={itemVariants}
+                animate={{
+                  rotate: [-2, 0, -2],
+                  scale: [1, 1.01, 1],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               >
-                <motion.h1
-                  animate={{
-                    rotate: [-3, -1, -3],
-                    scale: [1, 1.02, 1],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  Git
-                  Gud
-                </motion.h1>
-              </motion.div>
+                GitGud
+              </motion.h1>
 
               <motion.div
                 className="hero-text"
                 variants={itemVariants}
               >
                 <p>
-                 Learn Git. Make Memes. Make Your First Contribution.
+                  Learn Git. Make Memes. Make Your First Contribution.
                 </p>
 
                 <p>
-                 Hosted by OSDC, this fun hands-on session introduces you to Git and GitHub through a shared meme project.
-                 No experience needed, just bring your creativity.
+                  Hosted by OSDC, this fun hands-on session introduces
+                  you to Git and GitHub through a shared meme project.
+                  No experience needed, just bring your creativity.
                 </p>
-                
+
                 <motion.button
-                className="red-button"
-                onClick={onNext}
-                whileHover={{
-                  scale: 1.06,
-                  y: -3,
-                  boxShadow: "5px 5px 0 #111",
-                }}
-                whileTap={{
-                  scale: 0.95,
-                  y: 0,
-                  boxShadow: "2px 2px 0 #111",
-                }}
-              >
-                Get Started ➜
-              </motion.button>
+                  className="bigbutton"
+                  onClick={onNext}
+                  whileHover={{
+                    scale: 1.06,
+                    y: -3,
+                    boxShadow: "5px 5px 0 #111",
+                  }}
+                  whileTap={{
+                    scale: 0.95,
+                    y: 0,
+                    boxShadow: "2px 2px 0 #111",
+                  }}
+                >
+                  Get Started ➜
+                </motion.button>
               </motion.div>
-            </motion.div>
-          </section>
+            </div>
+
+           <motion.div
+            className="hero-image"
+            variants={itemVariants}
+            animate={{
+              y: [0, -12, 0],
+              rotate: [-2, 2, -2],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+            }}
+          >
+            <img
+              src={octocat}
+              alt="octocat"
+            />
+          </motion.div>
+          </motion.div>
+        </section>
 
           <Ticker /><br></br>
 
@@ -236,7 +237,7 @@ function HomePage({
                 }}
               >
                 <img
-                  src="https://freepngimg.com/save/98800-meme-dank-download-hq/861x841"
+                  src="https://fossunited.org/files/osdc_logo.jpg"
                 />
               </motion.div>
             </motion.div>
@@ -268,7 +269,7 @@ function HomePage({
                 </p><br></br>
 
               <motion.a
-                  className="red-button"
+                  className="bigbutton"
                   href="https://discord.gg/QUWfMS4HXX"
                   whileHover={{
                     scale: 1.06,
@@ -293,7 +294,7 @@ function HomePage({
   );
 }
 
-function BlankPage({
+function ContentPage({
   pageIndex,
   onPrevious,
   onNext,
@@ -305,13 +306,13 @@ function BlankPage({
   const page = pages[pageIndex - 1];
 
   return (
-    <section className="page blank-page">
-      <div className="blank-card">
+    <section className="page content-page">
+      <div className="content-card">
         <Navbar />
 
-        <main className="blank-content">
+        <main className="content-content">
           <motion.div
-            className="blank-inner"
+            className="content-inner"
             initial="hidden"
             animate="visible"
             variants={containerVariants}
@@ -333,10 +334,10 @@ function BlankPage({
             </motion.h2>
 
             <motion.div
-              className="blank-placeholder"
+              className="content-placeholder"
               variants={itemVariants}
             >
-              {/* Intentionally blank */}
+              {/* Intentionally content */}
             </motion.div>
           </motion.div>
         </main>
@@ -370,7 +371,7 @@ function PageNavigation({
       />
 
       <div className="page-counter">
-        {String(currentPage ).padStart(2, "")} / 3
+        {String(currentPage ).padStart(2, "")} / 9
       </div>
 
       <ArrowButton
@@ -384,15 +385,15 @@ function PageNavigation({
 function App() {
   const [currentPage, setCurrentPage] = useState(0);
 
-  const goToPage = (page: number) => {
-    const nextPage = Math.max(0, Math.min(3, page));
+ const goToPage = (page: number) => {
+  const nextPage = page > 9 ? 1 : Math.max(0, page);
 
-    setCurrentPage(nextPage);
+  setCurrentPage(nextPage);
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
   };
 
   return (
@@ -404,7 +405,7 @@ function App() {
       )}
 
       {currentPage > 0 && (
-        <BlankPage
+        <ContentPage
           pageIndex={currentPage}
           onPrevious={() =>
             goToPage(currentPage - 1)
