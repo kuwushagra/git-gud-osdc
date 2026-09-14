@@ -786,6 +786,10 @@ img {
   }
 }
 
+.mobile-repo {
+  display: none;
+}
+
 /* =========================
    MOBILE
 ========================= */
@@ -817,6 +821,15 @@ img {
 
   .repo-button {
     display: none;
+  }
+
+  .mobile-repo {
+    display: block;
+    padding: 12px 14px;
+    color: var(--black);
+    background: var(--yellow);
+    font-weight: 900;
+    border-top: 2px solid var(--black);
   }
 
   .menu-button {
@@ -1014,7 +1027,7 @@ img {
 
   .theme-switcher {
     right: 12px;
-    bottom: 12px;
+    bottom: 75px;
 
     padding: 7px 10px;
   }

@@ -35,20 +35,20 @@ export default function Navbar() {
         />
       </a>
 
-      <nav
-        className={`navitems ${
-          menuOpen ? "navitems-open" : ""
-        }`}
-      >
+      <nav className={`navitems ${menuOpen ? "navitems-open" : ""}`}>
         {links.map((link) => (
-          <a
-            key={link.name}
-            href={link.url}
-            onClick={closeMenu}
-          >
+          <a key={link.name} href={link.url} onClick={() => setMenuOpen(false)}>
             {link.name}
           </a>
         ))}
+
+        <a
+          className="mobile-repo"
+          href="https://github.com/kuwushagra/git-gud-osdc"
+          onClick={() => setMenuOpen(false)}
+        >
+          Repo
+        </a>
       </nav>
 
       <a
@@ -57,6 +57,7 @@ export default function Navbar() {
       >
         Repo
       </a>
+
 
       <button
         className={`menu-button ${
