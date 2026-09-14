@@ -1,33 +1,50 @@
+import { useState } from "react";
+
 const links = [
   {
-    name: "HOME",
+    name: "Home",
     url: "/",
   },
   {
-    name: "SOCIALS",
+    name: "Socials",
     url: "https://links.osdc.dev",
   },
   {
-    name: "MEMES",
+    name: "Memes",
     url: "/memes",
   },
 ];
 
 export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
   return (
     <header className="navbar">
-      <a href="https://osdc.dev" className="logo">
+      <a
+        href="https://osdc.dev"
+        className="logo"
+        aria-label="OSDC"
+      >
         <img
-          src="https://fossunited.org/files/osdc_logo.jpg"
+          src="https://links.osdc.dev/assets/logo-pixel.svg"
           alt="OSDC"
         />
       </a>
 
-      <nav className="navitems">
+      <nav
+        className={`navitems ${
+          menuOpen ? "navitems-open" : ""
+        }`}
+      >
         {links.map((link) => (
           <a
             key={link.name}
             href={link.url}
+            onClick={closeMenu}
           >
             {link.name}
           </a>
@@ -35,11 +52,34 @@ export default function Navbar() {
       </nav>
 
       <a
-        className="bigbutton"
+        className="bigbutton repo-button"
         href="https://github.com/kuwushagra/git-gud-osdc"
       >
         Repo
       </a>
+
+      <button
+        className={`menu-button ${
+          menuOpen ? "menu-button-open" : ""
+        }`}
+        onClick={() => setMenuOpen((open) => !open)}
+        aria-label={
+          menuOpen
+            ? "Close navigation menu"
+            : "Open navigation menu"
+        }
+        aria-expanded={menuOpen}
+      >
+        <span className="menu-label">
+          MENU
+        </span>
+
+        <span className="menu-icon" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </span>
+      </button>
     </header>
   );
 }

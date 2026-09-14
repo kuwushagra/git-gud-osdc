@@ -61,8 +61,8 @@ export default function Ticker() {
   }, []);
 
   return (
-    <div className="ticker">
-      <div className="ticker-track" ref={trackRef}>
+    <div className="ticker wenoselect">
+      <div className="ticker-track wenoselect" ref={trackRef}>
         {words.map((word) => (
           <span key={word}>
             ★ {word}
