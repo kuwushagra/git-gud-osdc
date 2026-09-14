@@ -7,12 +7,14 @@ import Ticker from "./components/Ticker";
 
 import gitgudheader from "./assets/images/gitgudheader.png";
 import octocat from "./assets/images/octocat.png";
+
 import meme1 from "./assets/images/Group 33.png";
 import meme2 from "./assets/images/Group 34.png";
 import meme3 from "./assets/images/Group 35.png";
 import meme4 from "./assets/images/Group 36.png";
 import meme5 from "./assets/images/Group 33-1.png";
 import meme6 from "./assets/images/Group 34-1.png";
+
 const containerVariants: Variants = {
   hidden: {},
   visible: {
@@ -83,6 +85,12 @@ const pages = [
     title: "MEMES PUSHED",
     type: "memes-pushed",
   },
+];
+
+const themes = [
+  "theme-green",
+  "theme-blue",
+  "theme-high-contrast",
 ];
 
 function ArrowButton({
@@ -345,14 +353,19 @@ function PageBody({ type }: { type: string }) {
           <div className="terminal-flow">
             <div className="terminal-box">
               <span>Set your email</span>
-              <code>git config --global user.email "your_email@example.com"</code>
+              <code>
+                git config --global user.email
+                "your_email@example.com"
+              </code>
             </div>
 
             <div className="terminal-line" />
 
             <div className="terminal-box">
               <span>Set username</span>
-              <code>git config --global user.name "your_username"</code>
+              <code>
+                git config --global user.name "your_username"
+              </code>
             </div>
           </div>
         </div>
@@ -369,7 +382,7 @@ function PageBody({ type }: { type: string }) {
 
           <a
             className="figma-button"
-            href="https://en.wikipedia.org/wiki/Cat"
+            href="https://github.com/git-gud-osdc"
             target="_blank"
             rel="noreferrer"
           >
@@ -391,7 +404,7 @@ function PageBody({ type }: { type: string }) {
           </div>
         </div>
       );
-    
+
     case "team-size":
       return (
         <div className="step-body centered-body">
@@ -494,7 +507,14 @@ function PageBody({ type }: { type: string }) {
 }
 
 function Meme({ src }: { src: string }) {
-  return <img className="meme-image" src={src} alt="Meme" />;
+  return (
+    <img
+      className="meme-image"
+      src={src}
+      alt="Meme"
+      draggable={false}
+    />
+  );
 }
 
 function ContentPage({
@@ -513,7 +533,7 @@ function ContentPage({
       <div className="content-card">
         <Navbar />
 
-        <main className="content-content wenoselect">
+        <main className="content-content">
           <motion.div
             className="content-inner"
             initial="hidden"
@@ -521,13 +541,16 @@ function ContentPage({
             variants={containerVariants}
           >
             <motion.span
-              className="eyebrow"
+              className="eyebrow wenoselect"
               variants={itemVariants}
             >
               {page.label}
             </motion.span>
 
-            <motion.h2 variants={itemVariants}>
+            <motion.h2
+              className="wenoselect"
+              variants={itemVariants}
+            >
               {page.title.split("\n").map((line, index) => (
                 <span key={`${line}-${index}`}>
                   {line}
@@ -574,7 +597,7 @@ function PageNavigation({
       />
 
       <div className="page-counter">
-        {String(currentPage ).padStart(2, "0")} / 9
+        {String(currentPage).padStart(2, "")} / 9
       </div>
 
       <ArrowButton
@@ -584,19 +607,16 @@ function PageNavigation({
     </div>
   );
 }
-const themes = [
-  "theme-green",
-  "theme-blue",
-  "theme-high-contrast",
-];
 
 function App() {
-
   const [currentPage, setCurrentPage] = useState(0);
   const [themeIndex, setThemeIndex] = useState(0);
 
   const goToPage = (page: number) => {
-    const nextPage = Math.min(9, Math.max(0, page));
+    const nextPage =
+      page > pages.length
+        ? 1
+        : Math.max(0, page);
 
     setCurrentPage(nextPage);
 
@@ -611,6 +631,7 @@ function App() {
       (current) => (current + 1) % themes.length
     );
   };
+
   return (
     <div className={`website ${themes[themeIndex]}`}>
       {currentPage === 0 && (
