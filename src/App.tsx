@@ -1,8 +1,9 @@
 import "./App.css";
 import { motion, type Variants } from "motion/react";
+import { useState } from "react";
+
 import Navbar from "./components/Navbar";
 import Ticker from "./components/Ticker";
-import { useState } from "react";
 
 import gitgudheader from "./assets/images/gitgudheader.png";
 import octocat from "./assets/images/octocat.png";
@@ -120,7 +121,6 @@ function HomePage({
 }) {
   return (
     <section className="page home-page">
-
       <motion.div
         className="main-card home-card"
         initial={{
@@ -139,26 +139,75 @@ function HomePage({
         <Navbar />
 
         <main>
-        <section className="hero">
-          <motion.div
-            className="hero-content"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <div className="hero-left">
-              <motion.img
-                className="hero-small-image"
-                src={gitgudheader}
-                alt="header"
-                variants={itemVariants}
-              />
+          <section className="hero wenoselect">
+            <motion.div
+              className="hero-content"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <div className="hero-left">
+                <motion.img
+                  className="hero-small-image"
+                  src={gitgudheader}
+                  alt="GitGud"
+                  variants={itemVariants}
+                />
 
-              <motion.h1
+                <motion.h1
+                  variants={itemVariants}
+                  animate={{
+                    rotate: [-2, 0, -2],
+                    scale: [1, 1.01, 1],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  GitGud
+                </motion.h1>
+
+                <motion.div
+                  className="hero-text"
+                  variants={itemVariants}
+                >
+                  <p>
+                    Learn Git. Make Memes. Make Your First Contribution.
+                  </p>
+
+                  <p>
+                    Hosted by OSDC, this fun hands-on session introduces
+                    you to Git and GitHub through a shared meme project.
+                    No experience needed, just bring your creativity.
+                  </p>
+
+                  <motion.button
+                    className="bigbutton"
+                    onClick={onNext}
+                    whileHover={{
+                      scale: 1.06,
+                      y: -3,
+                      boxShadow: "5px 5px 0 var(--black)",
+                    }}
+                    whileTap={{
+                      scale: 0.95,
+                      y: 0,
+                      boxShadow: "2px 2px 0 var(--black)",
+                    }}
+                  >
+                    Get Started ➜
+                  </motion.button>
+                </motion.div>
+              </div>
+
+              <motion.div
+                className="hero-image"
                 variants={itemVariants}
                 animate={{
-                  rotate: [-2, 0, -2],
-                  scale: [1, 1.01, 1],
+                  y: [0, -12, 0],
+                  rotate: [-2, 2, -2],
                 }}
                 transition={{
                   duration: 4,
@@ -166,66 +215,18 @@ function HomePage({
                   ease: "easeInOut",
                 }}
               >
-                GitGud
-              </motion.h1>
-
-              <motion.div
-                className="hero-text"
-                variants={itemVariants}
-              >
-                <p>
-                  Learn Git. Make Memes. Make Your First Contribution.
-                </p>
-
-                <p>
-                  Hosted by OSDC, this fun hands-on session introduces
-                  you to Git and GitHub through a shared meme project.
-                  No experience needed, just bring your creativity.
-                </p>
-
-                <motion.button
-                  className="bigbutton"
-                  onClick={onNext}
-                  whileHover={{
-                    scale: 1.06,
-                    y: -3,
-                    boxShadow: "5px 5px 0 #111",
-                  }}
-                  whileTap={{
-                    scale: 0.95,
-                    y: 0,
-                    boxShadow: "2px 2px 0 #111",
-                  }}
-                >
-                  Get Started ➜
-                </motion.button>
+                <img
+                  src={octocat}
+                  alt="Octocat"
+                />
               </motion.div>
-            </div>
+            </motion.div>
+          </section>
 
-           <motion.div
-            className="hero-image"
-            variants={itemVariants}
-            animate={{
-              y: [0, -12, 0],
-              rotate: [-2, 2, -2],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-            }}
-          >
-            <img
-              src={octocat}
-              alt="octocat"
-            />
-          </motion.div>
-          </motion.div>
-        </section>
-
-          <Ticker /><br></br>
+          <Ticker />
 
           <motion.section
-            className="about"
+            className="about wenoselect"
             initial="hidden"
             whileInView="visible"
             viewport={{
@@ -251,7 +252,8 @@ function HomePage({
                 }}
               >
                 <img
-                  src="https://fossunited.org/files/osdc_logo.jpg"
+                  src="https://links.osdc.dev/assets/logo-pixel.svg"
+                  alt="OSDC"
                 />
               </motion.div>
             </motion.div>
@@ -263,46 +265,44 @@ function HomePage({
               <h2>OSDC</h2>
 
               <p>
-                  We are an Open Source Community based in
-                  and around Jaypee Institute of Information
-                  Technology, Noida, India.
-                </p><br></br>
+                We are an Open Source Community based in
+                and around Jaypee Institute of Information
+                Technology, Noida, India.
+              </p>
 
-                <p>
-                  A community of web developers, android
-                  freaks, machine learning enthusiasts,
-                  hackers, designers, game developers and
-                  most significantly Explorers.
-                </p><br></br>
-                
-                <p>
-                  We welcome those who believe in the open
-                  source philosophy and are willing to
-                  sacrifice their naps in order to change
-                  the world.
-                </p><br></br>
+              <p>
+                A community of web developers, android
+                freaks, machine learning enthusiasts,
+                hackers, designers, game developers and
+                most significantly Explorers.
+              </p>
+
+              <p>
+                We welcome those who believe in the open
+                source philosophy and are willing to
+                sacrifice their naps in order to change
+                the world.
+              </p>
 
               <motion.a
-                  className="bigbutton"
-                  href="https://discord.gg/QUWfMS4HXX"
-                  whileHover={{
-                    scale: 1.06,
-                    y: -3,
-                    boxShadow: "5px 5px 0 #111",
-                  }}
-                  whileTap={{
-                    scale: 0.95,
-                    y: 0,
-                    boxShadow: "2px 2px 0 #111",
-                  }}
-                >
-                  Say Hello!
-                </motion.a>
+                className="bigbutton"
+                href="https://discord.gg/QUWfMS4HXX"
+                whileHover={{
+                  scale: 1.06,
+                  y: -3,
+                  boxShadow: "5px 5px 0 var(--black)",
+                }}
+                whileTap={{
+                  scale: 0.95,
+                  y: 0,
+                  boxShadow: "2px 2px 0 var(--black)",
+                }}
+              >
+                Say Hello!
+              </motion.a>
             </motion.div>
           </motion.section>
         </main>
-
-        
       </motion.div>
     </section>
   );
@@ -513,7 +513,7 @@ function ContentPage({
       <div className="content-card">
         <Navbar />
 
-        <main className="content-content">
+        <main className="content-content wenoselect">
           <motion.div
             className="content-inner"
             initial="hidden"
@@ -526,10 +526,10 @@ function ContentPage({
             >
               {page.label}
             </motion.span>
-            <br></br>
+
             <motion.h2 variants={itemVariants}>
-              {page.title.split("\n").map((line) => (
-                <span key={line}>
+              {page.title.split("\n").map((line, index) => (
+                <span key={`${line}-${index}`}>
                   {line}
                   <br />
                 </span>
@@ -587,20 +587,26 @@ function PageNavigation({
 
 function App() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [themeIndex, setThemeIndex] = useState(0);
 
- const goToPage = (page: number) => {
-  const nextPage = Math.min(9, Math.max(0, page));
+  const goToPage = (page: number) => {
+    const nextPage = Math.min(9, Math.max(0, page));
 
-  setCurrentPage(nextPage);
+    setCurrentPage(nextPage);
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-};
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
+  const changeTheme = () => {
+    setThemeIndex(
+      (current) => (current + 1) % themes.length
+    );
+  };
   return (
-    <div className="website">
+    <div className={`website ${themes[themeIndex]}`}>
       {currentPage === 0 && (
         <HomePage
           onNext={() => goToPage(1)}
@@ -618,6 +624,14 @@ function App() {
           }
         />
       )}
+
+      <button
+        className="theme-switcher"
+        onClick={changeTheme}
+        aria-label="Change color theme"
+      >
+        Theme
+      </button>
     </div>
   );
 }

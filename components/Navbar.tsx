@@ -35,51 +35,51 @@ export default function Navbar() {
         />
       </a>
 
-      <nav className={`navitems ${menuOpen ? "navitems-open" : ""}`}>
+      <nav
+        className={`navitems ${
+          menuOpen ? "navitems-open" : ""
+        }`}
+      >
         {links.map((link) => (
-          <a key={link.name} href={link.url} onClick={() => setMenuOpen(false)}>
+          <a
+            key={link.name}
+            href={link.url}
+            onClick={closeMenu}
+          >
             {link.name}
           </a>
         ))}
 
         <a
-          className="mobile-repo"
+          className="repo-menu-item"
           href="https://github.com/kuwushagra/git-gud-osdc"
-          onClick={() => setMenuOpen(false)}
+          onClick={closeMenu}
         >
-          Repo
+          REPO
         </a>
       </nav>
 
       <a
         className="bigbutton repo-button"
-        href="https://github.com/kuwushagra/git-gud-osdc"
+        href="https://github.com/linkhere"
       >
         Repo
       </a>
-
 
       <button
         className={`menu-button ${
           menuOpen ? "menu-button-open" : ""
         }`}
         onClick={() => setMenuOpen((open) => !open)}
-        aria-label={
-          menuOpen
-            ? "Close navigation menu"
-            : "Open navigation menu"
-        }
+        aria-label={menuOpen ? "Close menu" : "Open menu"}
         aria-expanded={menuOpen}
       >
-        <span className="menu-label">
-          MENU
-        </span>
-
         <span className="menu-icon" aria-hidden="true">
           <span />
           <span />
           <span />
         </span>
+        MENU
       </button>
     </header>
   );
