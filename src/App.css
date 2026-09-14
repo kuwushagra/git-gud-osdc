@@ -418,14 +418,23 @@ button {
 
 .content-content {
   flex: 1;
+  padding: 80px 60px;
+
   display: flex;
   align-items: center;
-  padding: 60px;
+  justify-content: center;
 }
-
 .content-inner {
   width: 100%;
+  max-width: 1050px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
 }
+
 
 .eyebrow {
   display: inline-block;
@@ -435,13 +444,27 @@ button {
   font-weight: bold;
 }
 
-.content-inner h1 {
+.content-inner h2 {
+  max-width: 1000px;
+
   margin: 0;
-  color: #0fbf3e;
-  font-size: clamp(70px, 12vw, 160px);
-  line-height: 0.8;
-  -webkit-text-stroke: 3px #0fbf3e;
-  text-shadow: 7px 7px 0 #c8ff32;
+
+  font-family: "fontRoot", sans-serif;
+  font-size: clamp(50px, 5.5vw, 85px);
+  font-weight: 400;
+
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+
+  color: #65bd4f;
+
+  text-align: center;
+
+  -webkit-text-stroke: 3px #111;
+
+  text-shadow:
+    4px 4px 0 #c8ff32,
+    7px 7px 0 #111;
 }
 
 .content-inner h1 span {
@@ -451,6 +474,272 @@ button {
 .content-placeholder {
   width: 100%;
   min-height: 80px;
+}
+
+
+
+/* =========================
+   FIGMA STEP CONTENT
+========================= */
+
+
+.content-placeholder {
+  width: 100%;
+  min-height: 120px;
+}
+
+.step-body {
+  width: 100%;
+  color: #fff;
+}
+
+.centered-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 130px;
+  text-align: center;
+}
+
+.centered-body p {
+  margin-bottom: 18px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+/* BUTTON */
+
+.figma-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  color: #111;
+  background: #ffdd21;
+  border: 2px solid #111;
+  box-shadow: 3px 3px 0 #111;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.figma-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 5px 5px 0 #111;
+}
+
+/* INPUT */
+
+.figma-input {
+  width: min(300px, 90%);
+  padding: 8px 12px;
+  color: #111;
+  background: white;
+  border: 2px solid #111;
+  outline: none;
+  text-align: center;
+  font-weight: bold;
+}
+
+.figma-input:focus {
+  box-shadow: 4px 4px 0 #c8ff32;
+}
+
+/* TEAM SIZE */
+
+.choice-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.choice-list button {
+  width: 300px;
+  height: 55px;
+  padding: 8px 12px;
+
+  color: #111;
+  background: #ffdd21;
+
+  border: 2px solid #111;
+  box-shadow: 4px 4px 0 #111;
+
+  cursor: pointer;
+
+  font-family: "fontRoot", sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.choice-list button:nth-child(2) {
+  background: #ff8f7a;
+}
+
+.choice-list button:nth-child(3) {
+  background: #ff7b61;
+}
+
+.choice-list button:hover {
+  transform: translateX(4px);
+}
+
+/* SETUP / GIT FLOW */
+
+.setup-body,
+.fork-body,
+.push-body {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.download-label {
+  display: inline-block;
+
+  margin-top: 25px;
+  margin-bottom: 5px;
+  padding: 7px 16px;
+
+  color: #111;
+  background: #e88f7a;
+
+  border: 2px solid #111;
+  box-shadow: 3px 3px 0 #111;
+
+  font-family: "fontRoot", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+
+  line-height: 1;
+}
+
+.step-highlight {
+  margin: 20px 0 35px;
+
+  color: #e88f7a;
+
+  font-family: "fontRoot", sans-serif;
+  font-size: clamp(30px, 4.9vw, 50px);
+  font-weight: 400;
+
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+
+  text-align: center;
+
+  -webkit-text-stroke: 3px #111;
+
+  text-shadow:
+    4px 4px 0 #111;
+}
+
+
+.fork-body p {
+  max-width: 1050px;
+  margin: 100px auto 0;
+  color: #c8ff32;
+  font-family: "fontRoot", sans-serif;
+  font-size: clamp(24px, 3vw, 38px);
+  line-height: 1.1;
+  text-align: center;
+  -webkit-text-stroke: 2px #111;
+}
+
+.fork-body .figma-button {
+  margin-top: 25px;
+  padding: 16px 45px;
+  font-size: 24px;
+}
+.setup-body .terminal-flow,
+.fork-body .terminal-flow,
+.push-body .terminal-flow {
+  display: grid;
+  grid-template-columns: 1fr 50px 1fr;
+
+  align-items: center;
+
+  gap: 15px;
+
+  width: 100%;
+  max-width: 650px;
+
+  margin: -10px auto 0;
+}
+
+.terminal-box {
+  min-height: 70px;
+  padding: 12px;
+
+  color: #c8ff32;
+  background: #050505;
+
+  border: 1px solid #333;
+
+  font-size: 11px;
+  text-align: center;
+}
+
+.terminal-box span {
+  display: block;
+  margin-bottom: 8px;
+  color: white;
+  font-family: "fontRoot", sans-serif;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.terminal-box code {
+  font-family: monospace;
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.terminal-line {
+  height: 2px;
+  background: #fff;
+  position: relative;
+}
+
+.terminal-line::after {
+  content: "→";
+  position: absolute;
+  right: -5px;
+  top: -10px;
+  color: white;
+  font-size: 18px;
+}
+
+/* MEMES */
+
+.meme-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(70px, 130px));
+  justify-content: start;
+  gap: 5px;
+  max-width: 650px;
+}
+
+.meme-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 2px solid #111;
+}
+
+.pushed-grid {
+  max-width: 700px;
 }
 
 /* =========================
@@ -617,9 +906,74 @@ button {
     padding: 35px 20px;
   }
 
-  .content-inner h1 {
-    font-size: clamp(65px, 20vw, 110px);
-    -webkit-text-stroke: 2px #0fbf3e;
-    text-shadow: 5px 5px 0 #c8ff32;
+  .content-inner h2 {
+    font-size: clamp(50px, 18vw, 85px);
+    -webkit-text-stroke: 2px #111;
+    text-shadow:
+      4px 4px 0 #c8ff32,
+      7px 7px 0 #111;
   }
+}
+
+.step-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-body p {
+  max-width: 800px;
+  margin: 0 auto;
+
+  color: #c8ff32;
+
+  font-family: "fontRoot", sans-serif;
+  font-size: clamp(24px, 3vw, 38px);
+  line-height: 1.1;
+
+  text-align: center;
+}
+
+.figma-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 45px;
+  padding: 16px 34px;
+
+  background: #ffdd21;
+  color: #111;
+
+  border: 3px solid #111;
+  box-shadow: 6px 6px 0 #111;
+
+  font-family: "fontRoot", sans-serif;
+  font-size: 24px;
+  line-height: 1;
+
+  text-decoration: none;
+
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+.figma-button:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 3px 3px 0 #111;
+}
+
+.figma-button:active {
+  transform: translate(6px, 6px);
+  box-shadow: none;
+}
+
+.fork-body p {
+  margin-top: 30px;
+}
+.fork-terminal-flow {
+  margin-top: 45px !important;
 }

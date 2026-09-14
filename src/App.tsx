@@ -6,7 +6,12 @@ import { useState } from "react";
 
 import gitgudheader from "./assets/images/gitgudheader.png";
 import octocat from "./assets/images/octocat.png";
-
+import meme1 from "./assets/images/Group 33.png";
+import meme2 from "./assets/images/Group 34.png";
+import meme3 from "./assets/images/Group 35.png";
+import meme4 from "./assets/images/Group 36.png";
+import meme5 from "./assets/images/Group 33-1.png";
+import meme6 from "./assets/images/Group 34-1.png";
 const containerVariants: Variants = {
   hidden: {},
   visible: {
@@ -34,40 +39,49 @@ const itemVariants: Variants = {
 const pages = [
   {
     label: "Step One",
-    title: "Make account",
+    title: "MAKE A\nGITHUB ACCOUNT",
+    type: "github-account",
   },
   {
     label: "Step Two",
-    title: "Setup Git",
+    title: "SETUP GIT",
+    type: "setup-git",
   },
   {
     label: "Step Three",
-    title: "Fork",
+    title: "FORK",
+    type: "fork",
+  },
+  {
+    label: "Step 3.1",
+    title: "SELECT NO. OF MEMBERS\nIN YOUR TEAM",
+    type: "team-size",
+  },
+  {
+    label: "3.2",
+    title: "ENTER TEAM NAME",
+    type: "team-name",
+  },
+  {
+    label: "3.3",
+    title: "WHICH TEAM MEMBER\nARE YOU?",
+    type: "team-member",
+  },
+  {
+    label: "3.4",
+    title: "MEMES AVAILABLE",
+    type: "memes-available",
   },
   {
     label: "Step Four",
-    title: "Something",
+    title: "CHANGE BRANCH",
+    type: "push",
   },
   {
-    label: "Step Five",
-    title: "Something",
+    label: "/memes",
+    title: "MEMES PUSHED",
+    type: "memes-pushed",
   },
-  {
-    label: "Step Six-",
-    title: "Something",
-  },
-  {
-    label: "-Seven :D",
-    title: "Something",
-  },
-  {
-    label: "Step Eight",
-    title: "Something",
-  },
-  {
-    label: "Step Nine",
-    title: "Something",
-  }
 ];
 
 function ArrowButton({
@@ -294,6 +308,195 @@ function HomePage({
   );
 }
 
+function PageBody({ type }: { type: string }) {
+  switch (type) {
+    case "github-account":
+      return (
+        <div className="step-body centered-body">
+          <a
+            className="figma-button"
+            href="https://github.com/signup"
+            target="_blank"
+            rel="noreferrer"
+          >
+            CLICK HERE
+          </a>
+        </div>
+      );
+
+    case "setup-git":
+      return (
+        <div className="step-body setup-body">
+          <a
+            className="download-label"
+            href="https://git-scm.com/install/windows"
+            target="_blank"
+            rel="noreferrer"
+          >
+            DOWNLOAD
+          </a>
+
+          <div className="step-highlight">
+            CONNECT WITH
+            <br />
+            GITHUB
+          </div>
+
+          <div className="terminal-flow">
+            <div className="terminal-box">
+              <span>Set your email</span>
+              <code>git config --global user.email "your_email@example.com"</code>
+            </div>
+
+            <div className="terminal-line" />
+
+            <div className="terminal-box">
+              <span>Set username</span>
+              <code>git config --global user.name "your_username</code>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "fork":
+      return (
+        <div className="step-body fork-body">
+          <p>
+            Go to the PROJECT'S PAGE ON GITHUB and click
+            <br />
+            the FORK button.
+          </p>
+
+          <a
+            className="figma-button"
+            href="https://en.wikipedia.org/wiki/Cat"
+            target="_blank"
+            rel="noreferrer"
+          >
+            CLICK HERE TO GO TO GITHUB REPO
+          </a>
+
+          <div className="terminal-flow fork-terminal-flow">
+            <div className="terminal-box">
+              <span>Initialize a repo</span>
+              <code>git init</code>
+            </div>
+
+            <div className="terminal-line" />
+
+            <div className="terminal-box">
+              <span>Add origin</span>
+              <code>git remote add origin (your-fork-url)</code>
+            </div>
+          </div>
+        </div>
+      );
+    
+    case "team-size":
+      return (
+        <div className="step-body centered-body">
+          <div className="choice-list">
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+          </div>
+        </div>
+      );
+
+    case "team-name":
+      return (
+        <div className="step-body centered-body">
+          <input
+            className="figma-input"
+            type="text"
+            placeholder="ENTER TEAM NAME"
+          />
+        </div>
+      );
+
+    case "team-member":
+      return (
+        <div className="step-body centered-body">
+          <p>
+            Which team member are you?
+            <br />
+            <small>Eg: #1 for team member 1</small>
+          </p>
+
+          <input
+            className="figma-input"
+            type="text"
+            placeholder="ENTER MEMBER ID"
+          />
+        </div>
+      );
+
+    case "memes-available":
+      return (
+        <div className="step-body meme-grid">
+          <Meme src={meme1} />
+          <Meme src={meme2} />
+          <Meme src={meme3} />
+          <Meme src={meme4} />
+          <Meme src={meme5} />
+          <Meme src={meme6} />
+        </div>
+      );
+
+    case "push":
+      return (
+        <div className="step-body push-body">
+          <div className="terminal-flow">
+            <div className="terminal-box">
+              <span>Change branch</span>
+              <code>git checkout -b memes</code>
+            </div>
+
+            <div className="terminal-line" />
+
+            <div className="terminal-box">
+              <span>Add file</span>
+              <code>git add .</code>
+            </div>
+
+            <div className="terminal-line" />
+
+            <div className="terminal-box">
+              <span>Do your first commit</span>
+              <code>git commit -m "first commit"</code>
+            </div>
+
+            <div className="terminal-line" />
+
+            <div className="terminal-box">
+              <span>Push your commit</span>
+              <code>git push origin memes</code>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "memes-pushed":
+      return (
+        <div className="step-body meme-grid pushed-grid">
+          <Meme src={meme1} />
+          <Meme src={meme2} />
+          <Meme src={meme3} />
+          <Meme src={meme4} />
+          <Meme src={meme5} />
+          <Meme src={meme6} />
+        </div>
+      );
+
+    default:
+      return null;
+  }
+}
+
+function Meme({ src }: { src: string }) {
+  return <img className="meme-image" src={src} alt="Meme" />;
+}
+
 function ContentPage({
   pageIndex,
   onPrevious,
@@ -337,7 +540,7 @@ function ContentPage({
               className="content-placeholder"
               variants={itemVariants}
             >
-              {/* Intentionally content */}
+              <PageBody type={page.type} />
             </motion.div>
           </motion.div>
         </main>
@@ -371,7 +574,7 @@ function PageNavigation({
       />
 
       <div className="page-counter">
-        {String(currentPage ).padStart(2, "")} / 9
+        {String(currentPage ).padStart(2, "0")} / 9
       </div>
 
       <ArrowButton
@@ -386,7 +589,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState(0);
 
  const goToPage = (page: number) => {
-  const nextPage = page > 9 ? 1 : Math.max(0, page);
+  const nextPage = Math.min(9, Math.max(0, page));
 
   setCurrentPage(nextPage);
 
@@ -394,7 +597,7 @@ function App() {
     top: 0,
     behavior: "smooth",
   });
-  };
+};
 
   return (
     <div className="website">
