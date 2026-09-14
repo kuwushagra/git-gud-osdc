@@ -693,19 +693,7 @@ img {
     7px 7px 0 #111;
 }
 
-  color: var(--page-heading);
 
-  font-size: clamp(44px, 6vw, 76px);
-
-  line-height: 0.95;
-
-  letter-spacing: -0.025em;
-
-  -webkit-text-stroke: 1.5px var(--page-heading);
-
-  text-shadow:
-    4px 4px 0 var(--page-heading-shadow);
-}
 
 .content-placeholder {
   width: 100%;

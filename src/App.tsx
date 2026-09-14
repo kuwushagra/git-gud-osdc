@@ -352,7 +352,7 @@ function PageBody({ type }: { type: string }) {
 
             <div className="terminal-box">
               <span>Set username</span>
-              <code>git config --global user.name "your_username</code>
+              <code>git config --global user.name "your_username"</code>
             </div>
           </div>
         </div>
@@ -584,8 +584,14 @@ function PageNavigation({
     </div>
   );
 }
+const themes = [
+  "theme-green",
+  "theme-blue",
+  "theme-high-contrast",
+];
 
 function App() {
+
   const [currentPage, setCurrentPage] = useState(0);
   const [themeIndex, setThemeIndex] = useState(0);
 
