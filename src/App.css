@@ -11,6 +11,7 @@ html {
 }
 
 body {
+  color: #c8ff32;
   margin: 0;
 }
 
@@ -52,48 +53,6 @@ button {
 }
 
 /* =========================
-   BACKGROUND CARDS
-========================= */
-
-.background-cards {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  width: min(520px, 43vw);
-  height: 700px;
-  pointer-events: none;
-}
-
-.background-card {
-  position: absolute;
-  width: clamp(280px, 31vw, 380px);
-  height: clamp(460px, 49vw, 600px);
-  padding: 30px;
-  color: #fff;
-  background: #0a241b;
-  border: 2px solid #111;
-  font-size: 12px;
-  transform-origin: center center;
-  transition: box-shadow 0.3s ease;
-  pointer-events: auto;
-}
-
-.background-card:hover {
-  box-shadow: 8px 10px 0 rgba(0, 0, 0, 0.2);
-}
-
-.card-one {
-  top: 20px;
-  right: clamp(60px, 7vw, 90px);
-}
-
-.card-two {
-  top: 70px;
-  right: 0;
-}
-
-/* =========================
    MAIN HOME CARD
 ========================= */
 
@@ -103,10 +62,32 @@ button {
   width: min(1200px, 100%);
   min-height: calc(100vh - 80px);
   margin: 0 auto;
-  overflow: hidden;
-  background: #0fbf3e;
+  overflow: visible;
+  background: #0a241b;
   border: 2px solid #111;
   box-shadow: 12px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.website::before,
+.website::after {
+  position: absolute;
+  z-index: 1;
+  top: 35px;
+  left: 50%;
+  width: min(1050px, 88%);
+  height: 75%;
+  content: "";
+  background: #0fbf3e; 
+  border: 2px solid #111;
+  pointer-events: none;
+}
+
+.website::before {
+  transform: translateX(calc(-50% + 110px)) rotate(7deg);
+}
+
+.website::after {
+  transform: translateX(calc(-50% + 80px)) rotate(-6deg);
 }
 
 /* =========================
@@ -175,27 +156,6 @@ button {
   transform-origin: left;
 }
 
-.hello-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 7px 16px;
-  color: #fff;
-  background: #ff3030;
-  border: 2px solid #111;
-  border-radius: 20px;
-  box-shadow: 2px 2px 0 #111;
-  font-size: 1.05rem;
-  font-weight: bold;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.hello-button:hover {
-  transform: scale(1.08) rotate(-2deg);
-}
-
 /* =========================
    HERO
 ========================= */
@@ -205,35 +165,59 @@ button {
 }
 
 .hero-content {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 0.8fr;
   align-items: center;
-  justify-content: center;
   gap: 50px;
   margin-top: 30px;
 }
 
-.hero-placeholder {
+.hero-left {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50%;
-  min-height: 300px;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .hero h1 {
-  margin: 0;
+  margin: 0 0 30px;
   color: #ffdd21;
-  font-size: clamp(90px, 15vw, 190px);
-  line-height: 0.8;
-  text-align: center;
-  -webkit-text-stroke: 5px #111;
-  text-shadow: 8px 8px 0 #111;
+  font-size: clamp(65px, 9vw, 115px);
+  line-height: 0.78;
+  text-align: left;
+  -webkit-text-stroke: 4px #111;
+  text-shadow: 6px 6px 0 #111;
 }
 
 .hero-text {
-  width: 35%;
+  width: 100%;
+  max-width: 470px;
   font-size: 13px;
   line-height: 1.5;
+}
+
+.hero-text p {
+  margin: 0 0 20px;
+}
+
+.hero-image img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter:
+    drop-shadow(2px 0 0 #111)
+    drop-shadow(-2px 0 0 #111)
+    drop-shadow(0 2px 0 #111)
+    drop-shadow(0 -2px 0 #111)
+    drop-shadow(8px 8px 0 #111);
+  transform: rotate(2deg);
+}
+
+.hero-small-image {
+  display: block;
+  height: auto;
+  margin-bottom: 40px;
 }
 
 .hero-text p {
@@ -244,16 +228,16 @@ button {
    RED BUTTON
 ========================= */
 
-.red-button {
+.bigbutton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
-  color: #fff;
-  background: #ff3030;
+  color: #111;
+  background: #ffdd21;
   border: 2px solid #111;
+  box-shadow: 3px 3px 0 #111;
   border-radius: 20px;
-  box-shadow: 2px 2px 0 #111;
   cursor: pointer;
   font-weight: bold;
   transition:
@@ -261,12 +245,12 @@ button {
     box-shadow 0.2s ease;
 }
 
-.red-button:hover {
+.bigbutton:hover {
   transform: translateY(-3px) scale(1.06);
   box-shadow: 5px 5px 0 #111;
 }
 
-.red-button:active {
+.bigbutton:active {
   transform: scale(0.95);
   box-shadow: 2px 2px 0 #111;
 }
@@ -278,8 +262,9 @@ button {
 .ticker {
   position: relative;
   z-index: 10;
-  width: calc(100% + 4px);
-  margin-left: -2px;
+  width: calc(98.5% - 4.5px);
+  margin-top: 15px;
+  margin-left: 11.5px;
   overflow: hidden;
   padding: 10px 0;
   color: #111;
@@ -296,34 +281,15 @@ button {
 .ticker-track {
   display: flex;
   width: max-content;
-  animation: ticker-scroll 12s linear infinite;
   will-change: transform;
 }
 
-.ticker-group {
-  display: flex;
-  flex: 0 0 auto;
-  width: max-content;
-  margin: 0;
-  padding: 0;
-}
-
-.ticker-group span {
+.ticker-track > span {
   display: block;
   flex: 0 0 auto;
-  margin: 0;
   padding: 0 18px;
 }
 
-@keyframes ticker-scroll {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
 
 /* =========================
    ABOUT
@@ -353,7 +319,7 @@ button {
   display: block;
   width: min(300px, 80%);
   height: auto;
-  border-radius: 0 0 45px 45px;
+  border-radius: 45px 45px 45px 45px;
 }
 
 .about-text h2 {
@@ -377,10 +343,12 @@ button {
 
 .page-navigation {
   display: flex;
-  margin-top: 20px;
+  margin-top: 40px;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  color: #111;
+  background: #0fbf3e;
   padding: 18px 25px;
   border-top: 2px solid #111;
 }
@@ -414,16 +382,16 @@ button {
 }
 
 /* =========================
-   BLANK PAGES
+   CONTENT PAGES
 ========================= */
 
-.blank-page {
+.content-page {
   display: flex;
   align-items: stretch;
   min-height: calc(100vh - 80px);
 }
 
-.blank-card {
+.content-card {
   position: relative;
   z-index: 5;
   display: flex;
@@ -434,28 +402,28 @@ button {
   overflow: hidden;
   color: #0fbf3e;
   background: #111;
-  border: 2px solid #0fbf3e;
+  border: 2px solid #111;
   box-shadow: 12px 15px 0 rgba(0, 0, 0, 0.15);
 }
 
-.blank-card .navbar {
+.content-card .navbar {
   color: #111;
   background: #0fbf3e;
   border-bottom-color: #0fbf3e;
 }
 
-.blank-card .navbar a::after {
+.content-card .navbar a::after {
   background: #111;
 }
 
-.blank-content {
+.content-content {
   flex: 1;
   display: flex;
   align-items: center;
   padding: 60px;
 }
 
-.blank-inner {
+.content-inner {
   width: 100%;
 }
 
@@ -467,7 +435,7 @@ button {
   font-weight: bold;
 }
 
-.blank-inner h1 {
+.content-inner h1 {
   margin: 0;
   color: #0fbf3e;
   font-size: clamp(70px, 12vw, 160px);
@@ -476,11 +444,11 @@ button {
   text-shadow: 7px 7px 0 #c8ff32;
 }
 
-.blank-inner h1 span {
+.content-inner h1 span {
   display: inline;
 }
 
-.blank-placeholder {
+.content-placeholder {
   width: 100%;
   min-height: 80px;
 }
@@ -514,7 +482,7 @@ button {
 
   .page,
   .main-card,
-  .blank-card {
+  .content-card {
     min-height: calc(100vh - 50px);
   }
 
@@ -552,7 +520,7 @@ button {
 
   .page,
   .main-card,
-  .blank-card {
+  .content-card {
     min-height: calc(100vh - 20px);
   }
 
@@ -569,23 +537,38 @@ button {
     display: none;
   }
 
-  .hello-button {
-    padding: 6px 12px;
-    font-size: 0.9rem;
-  }
-
   .hero {
     padding: 35px 20px;
   }
 
   .hero-content {
-    flex-direction: column;
-    gap: 10px;
+    grid-template-columns: 1fr;
+    gap: 30px;
   }
 
-  .hero-placeholder {
+  .hero-left {
+    align-items: center;
+  }
+
+  .hero h1 {
+    margin-bottom: 25px;
+    font-size: 23vw;
+    text-align: center;
+    -webkit-text-stroke: 3px #111;
+    text-shadow: 5px 5px 0 #111;
+  }
+
+  .hero-text {
     width: 100%;
-    min-height: 200px;
+  }
+
+  .hero-image {
+    order: -1;
+  }
+
+  .hero-image img {
+    width: 90%;
+    height: 260px;
   }
 
   .hero h1 {
@@ -604,11 +587,7 @@ button {
     transform: rotate(-2.5deg) scale(1.04);
   }
 
-  .ticker-track {
-    animation-duration: 9s;
-  }
-
-  .ticker-group span {
+ .ticker-track > span {
     padding: 0 14px;
   }
 
@@ -634,11 +613,11 @@ button {
     padding: 14px 15px;
   }
 
-  .blank-content {
+  .content-content {
     padding: 35px 20px;
   }
 
-  .blank-inner h1 {
+  .content-inner h1 {
     font-size: clamp(65px, 20vw, 110px);
     -webkit-text-stroke: 2px #0fbf3e;
     text-shadow: 5px 5px 0 #c8ff32;
