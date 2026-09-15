@@ -1,97 +1,137 @@
 import { useState } from "react";
 
 const links = [
-  {
-    name: "Home",
-    url: "/",
-  },
-  {
-    name: "Socials",
-    url: "https://links.osdc.dev",
-  },
-  {
-    name: "Memes",
-    url: "/memes",
-  },
+{
+name: "Home",
+url: "/",
+},
+{
+name: "Socials",
+url: "https://links.osdc.dev",
+},
+{
+name: "Repo",
+url: "https://github.com/kuwushagra/git-gud-osdc",
+},
 ];
 
-export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
+type NavbarProps = {
+onThemeChange: () => void;
+onMemesClick: () => void;
+memesLocked: boolean;
+};
 
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
+export default function Navbar({
+onThemeChange,
+onMemesClick,
+memesLocked,
+}: NavbarProps) {
+const [menuOpen, setMenuOpen] = useState(false);
 
-  return (
-    <header className="navbar">
-      <a
-        href="https://osdc.dev"
-        className="logo"
-        aria-label="OSDC"
-      >
-        <img
-          src="https://links.osdc.dev/assets/logo-pixel.svg"
-          alt="OSDC"
-        />
-      </a>
+const closeMenu = () => {
+setMenuOpen(false);
+};
 
-      <nav
-        id="mobile-navigation"
-        className={`navitems ${
-          menuOpen ? "navitems-open" : ""
-        }`}
-      >
-        {links.map((link) => (
-          <a
-            key={link.name}
-            href={link.url}
-            onClick={closeMenu}
-          >
-            {link.name}
-          </a>
-        ))}
+const handleMemesClick = () => {
+closeMenu();
+onMemesClick();
+};
 
-        <a
-          className="mobile-repo"
-          href="https://github.com/kuwushagra/git-gud-osdc"
-          onClick={closeMenu}
-        >
-          Repo
-        </a>
-      </nav>
+return (
+<header className="navbar">
+<a href="/" className="logo" aria-label="OSDC" onClick={closeMenu} >
+<img src="https://links.osdc.dev/assets/logo-pixel.svg" alt="OSDC" />
+</a>
 
-      <a
-        className="bigbutton repo-button"
-        href="https://github.com/kuwushagra/git-gud-osdc"
-      >
-        Repo
-      </a>
+  <nav
+    id="mobile-navigation"
+    className={`navitems ${
+      menuOpen ? "navitems-open" : ""
+    }`}
+  >
+    <a href="/" onClick={closeMenu}>
+      Home
+    </a>
 
-      <button
-        type="button"
-        className={`menu-button ${
-          menuOpen ? "menu-button-open" : ""
-        }`}
-        onClick={() => setMenuOpen((open) => !open)}
-        aria-label={
-          menuOpen
-            ? "Close navigation menu"
-            : "Open navigation menu"
-        }
-        aria-expanded={menuOpen}
-        aria-controls="mobile-navigation"
-      >
-        <span className="menu-label">MENU</span>
+    <a
+      href="https://links.osdc.dev"
+      onClick={closeMenu}
+    >
+      Socials
+    </a>
 
+    <button
+      type="button"
+      className={`nav-link-button${
+        memesLocked ? " nav-link-locked" : ""
+      }`}
+      onClick={handleMemesClick}
+      aria-label={
+        memesLocked
+          ? "Memes are locked"
+          : "Go to memes"
+      }
+    >
+      Memes
+      {memesLocked && (
         <span
-          className="menu-icon"
+          className="nav-lock"
           aria-hidden="true"
         >
-          <span />
-          <span />
-          <span />
+          🔒
         </span>
-      </button>
-    </header>
-  );
+      )}
+    </button>
+
+    <a
+      href="https://github.com/kuwushagra/git-gud-osdc"
+      onClick={closeMenu}
+    >
+      Repo
+    </a>
+  </nav>
+
+  <div className="navbar-actions">
+    <button
+      type="button"
+      className="theme-button"
+      onClick={onThemeChange}
+      aria-label="Change color theme"
+    >
+      Theme
+    </button>
+
+    <button
+      type="button"
+      className={`menu-button ${
+        menuOpen ? "menu-button-open" : ""
+      }`}
+      onClick={() =>
+        setMenuOpen((open) => !open)
+      }
+      aria-label={
+        menuOpen
+          ? "Close navigation menu"
+          : "Open navigation menu"
+      }
+      aria-expanded={menuOpen}
+      aria-controls="mobile-navigation"
+    >
+      <span className="menu-label">
+        MENU
+      </span>
+
+      <span
+        className="menu-icon"
+        aria-hidden="true"
+      >
+        <span />
+        <span />
+        <span />
+      </span>
+    </button>
+  </div>
+</header>
+
+);
 }
