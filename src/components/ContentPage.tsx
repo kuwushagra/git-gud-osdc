@@ -5,26 +5,9 @@ import Ticker from "./Ticker";
 import { pages, type TerminalStep } from "../pages";
 import "./ContentPage.css";
 import LONE_WOLF_IMAGE from "../assets/images/lonewolf.jpg";
+import { getMemesForTeamSize } from "../data/memes";
+import { API_BASE_URL } from "../config";
 
-/*
- * TESTING SWITCH
- *
- * false = bypass the isUnlock lock.
- * true  = require isUnlock to exist in the source repository.
- */
-const LOCK_ENABLED = false;
-
-const GITHUB_REPO_API =
-  "https://api.github.com/repos/kartinul/GitGud/contents";
-
-const GITHUB_SUBMISSIONS_API =
-  "https://api.github.com/repos/kartinul/GitGud/contents/submissions";
-
-const RAW_GITHUB_BASE =
-  "https://raw.githubusercontent.com/kartinul/GitGud/main/submissions";
-
-const MEME_TEMPLATES_API =
-  "https://api.memegen.link/templates/";
 
 const STORAGE_KEYS = {
   teamName: "gitgud-team-name",
@@ -70,24 +53,7 @@ type ContentPageProps = {
   onTeamMemberChange: (value: number) => void;
   showLockMessage: boolean;
   onMemesClick: () => void;
-  memesLocked: boolean;
-};
-
-type MemeTemplate = {
-  id: string;
-  name: string;
-  lines: number;
-  blank: string;
-  example: {
-    text: string[];
-    url: string;
-  };
-};
-
-type GitHubSubmission = {
-  name: string;
-  path: string;
-  type: string;
+  maxAllowedPage: number;
 };
 
 type SubmittedMeme = {
@@ -177,9 +143,8 @@ function Terminal({
         <div className="terminal-actions">
           <button
             type="button"
-            className={`terminal-copy${
-              copied ? " is-copied" : ""
-            }`}
+            className={`terminal-copy${copied ? " is-copied" : ""
+              }`}
             onClick={copyAll}
             aria-label="Copy terminal commands"
           >
@@ -230,92 +195,15 @@ function Terminal({
   );
 }
 
-let memeTemplatesPromise:
-  Promise<MemeTemplate[]> | null = null;
-
-function fetchMemeTemplates(): Promise<MemeTemplate[]> {
-  if (!memeTemplatesPromise) {
-    memeTemplatesPromise = fetch(
-      MEME_TEMPLATES_API,
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch meme templates: ${response.status}`,
-          );
-        }
-
-        return response.json();
-      })
-      .then((data) => {
-        if (!Array.isArray(data)) {
-          throw new Error(
-            "Invalid meme template response.",
-          );
-        }
-
-        return data as MemeTemplate[];
-      });
-  }
-
-  return memeTemplatesPromise;
-}
-
-function encodeMemeText(value: string): string {
-  return value
-    .trim()
-    .replace(/~/g, "~~")
-    .replace(/_/g, "__")
-    .replace(/-/g, "--")
-    .replace(/ /g, "_")
-    .replace(/\?/g, "~q")
-    .replace(/&/g, "~a")
-    .replace(/%/g, "~p")
-    .replace(/#/g, "~h")
-    .replace(/\//g, "~s")
-    .replace(/\\/g, "~b")
-    .replace(/</g, "~l")
-    .replace(/>/g, "~g")
-    .replace(/"/g, "~d")
-    .replace(/'/g, "~r")
-    .replace(/\n/g, "~n");
-}
-
-function MemeGallery() {
-  const [templates, setTemplates] = useState<
-    MemeTemplate[]
-  >([]);
-
+function MemeGallery({
+  teamSize,
+}: {
+  teamSize: number | null;
+}) {
   const [selectedTemplate, setSelectedTemplate] =
     useState(getSelectedTemplate);
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    fetchMemeTemplates()
-      .then((allTemplates) => {
-        if (!cancelled) {
-          setTemplates(allTemplates);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setError(true);
-        }
-      })
-      .finally(() => {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const templates = getMemesForTeamSize(teamSize);
 
   const selectTemplate = (templateId: string) => {
     setSelectedTemplate(templateId);
@@ -326,21 +214,18 @@ function MemeGallery() {
     );
   };
 
-  if (loading) {
-    return (
-      <div className="meme-loading">
-        LOADING MEME TEMPLATES...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="meme-loading">
-        COULD NOT LOAD MEME TEMPLATES.
-      </div>
-    );
-  }
+  const getSubtitle = () => {
+    if (teamSize === 1) {
+      return "LONE WOLF • ALL TEMPLATES AVAILABLE";
+    }
+    if (teamSize === 2) {
+      return "2-MEMBER TEAM • 2-CAPTION MEMES";
+    }
+    if (teamSize === 3) {
+      return "3-MEMBER TEAM • 3-CAPTION MEMES";
+    }
+    return "CHOOSE A TEMPLATE";
+  };
 
   if (templates.length === 0) {
     return (
@@ -353,7 +238,7 @@ function MemeGallery() {
   return (
     <div className="meme-selector">
       <div className="meme-selector-hint">
-        CLICK A TEMPLATE TO SELECT IT
+        {getSubtitle()}
         {selectedTemplate
           ? ` • SELECTED: ${selectedTemplate}`
           : ""}
@@ -368,9 +253,8 @@ function MemeGallery() {
             <button
               type="button"
               key={template.id}
-              className={`meme-card${
-                isSelected ? " is-selected" : ""
-              }`}
+              className={`meme-card${isSelected ? " is-selected" : ""
+                }`}
               onClick={() =>
                 selectTemplate(template.id)
               }
@@ -380,10 +264,13 @@ function MemeGallery() {
               <div className="meme-card-image-wrap">
                 <img
                   className="meme-image"
-                  src={template.blank}
+                  src={template.image}
                   alt={template.name}
                   draggable={false}
                   loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.src = template.remoteUrl;
+                  }}
                 />
 
                 {isSelected && (
@@ -404,92 +291,22 @@ function MemeGallery() {
   );
 }
 
-async function fetchGitHubSubmissions(): Promise<
-  GitHubSubmission[]
-> {
-  const response = await fetch(
-    GITHUB_SUBMISSIONS_API,
-    {
-      headers: {
-        Accept: "application/vnd.github+json",
-      },
-    },
-  );
+async function fetchSubmittedImages(): Promise<string[]> {
+  const response = await fetch(`${API_BASE_URL}/image/get`, {
+    cache: "no-store",
+  });
 
   if (!response.ok) {
-    throw new Error(
-      `Failed to fetch submissions: ${response.status}`,
-    );
+    throw new Error(`Failed to fetch images: ${response.status}`);
   }
 
   const data = await response.json();
 
   if (!Array.isArray(data)) {
-    throw new Error(
-      "Invalid GitHub submissions response.",
-    );
+    throw new Error("Invalid image response.");
   }
 
-  return data.filter(
-    (item): item is GitHubSubmission =>
-      item &&
-      item.type === "dir" &&
-      typeof item.name === "string",
-  );
-}
-
-async function fetchSubmissionText(
-  submissionName: string,
-  filename: string,
-): Promise<string> {
-  const response = await fetch(
-    `${RAW_GITHUB_BASE}/${encodeURIComponent(
-      submissionName,
-    )}/${filename}`,
-  );
-
-  if (!response.ok) {
-    return "";
-  }
-
-  return (await response.text()).trim();
-}
-
-async function buildSubmissionImage(
-  submissionName: string,
-): Promise<string | null> {
-  const memeName = await fetchSubmissionText(
-    submissionName,
-    "meme_name.txt",
-  );
-
-  if (!memeName) {
-    return null;
-  }
-
-  const captions: string[] = [];
-
-  for (let index = 1; index <= 10; index += 1) {
-    const caption = await fetchSubmissionText(
-      submissionName,
-      `caption${index}.txt`,
-    );
-
-    if (!caption) {
-      break;
-    }
-
-    captions.push(encodeMemeText(caption));
-  }
-
-  const captionPath =
-    captions.length > 0
-      ? `/${captions.join("/")}`
-      : "";
-
-  return `https://api.memegen.link/images/${encodeMemeText(
-    memeName,
-  )}${captionPath}.png`;
+  return data as string[];
 }
 
 function SubmittedMemes() {
@@ -508,41 +325,33 @@ function SubmittedMemes() {
         setLoading(true);
         setError(false);
 
-        const submissions =
-          await fetchGitHubSubmissions();
-
-        const results = await Promise.all(
-          submissions.map(async (submission) => {
-            const imageUrl =
-              await buildSubmissionImage(
-                submission.name,
-              );
-
-            if (!imageUrl) {
-              return null;
-            }
-
-            return {
-              team: submission.name,
-              imageUrl,
-            };
-          }),
-        );
+        const paths = await fetchSubmittedImages();
 
         if (cancelled) {
           return;
         }
 
-        setMemes(
-          results.filter(
-            (
-              result,
-            ): result is SubmittedMeme =>
-              Boolean(result),
-          ),
-        );
-      } catch {
+        const results = paths.map((path) => {
+          // If the backend returns paths like "/image/raw/xyz.png", use it directly.
+          // Otherwise, construct it.
+          const imageUrl = path.startsWith("/")
+            ? `${API_BASE_URL}${path}`
+            : `${API_BASE_URL}/image/raw/${path}`;
+
+          // Extract a name for the team from the path
+          const filename = path.split("/").pop() || path;
+          const team = filename.replace(/\.[^/.]+$/, ""); // Remove extension
+
+          return {
+            team,
+            imageUrl,
+          };
+        });
+
+        setMemes(results);
+      } catch (e) {
         if (!cancelled) {
+          console.error("loadSubmissions failed (likely CORS or Network Error):", e);
           setError(true);
         }
       } finally {
@@ -562,7 +371,7 @@ function SubmittedMemes() {
   if (loading) {
     return (
       <div className="meme-loading">
-        CHECKING GITHUB SUBMISSIONS...
+        CHECKING SUBMISSIONS...
       </div>
     );
   }
@@ -570,7 +379,7 @@ function SubmittedMemes() {
   if (error) {
     return (
       <div className="meme-loading">
-        COULD NOT LOAD GITHUB SUBMISSIONS.
+        COULD NOT LOAD SUBMISSIONS.
       </div>
     );
   }
@@ -594,7 +403,7 @@ function SubmittedMemes() {
             <img
               className="meme-image"
               src={meme.imageUrl}
-              alt={`Meme submitted by ${meme.team}`}
+              alt={`Meme ${meme.team}`}
               draggable={false}
               loading="lazy"
             />
@@ -607,24 +416,6 @@ function SubmittedMemes() {
       ))}
     </div>
   );
-}
-
-function isUnlockAvailable(): Promise<boolean> {
-  if (!LOCK_ENABLED) {
-    return Promise.resolve(true);
-  }
-
-  return fetch(
-    `${GITHUB_REPO_API}/isUnlock`,
-    {
-      headers: {
-        Accept: "application/vnd.github+json",
-      },
-      cache: "no-store",
-    },
-  )
-    .then((response) => response.ok)
-    .catch(() => false);
 }
 
 function TeamMemberPage({
@@ -756,7 +547,7 @@ function PageBody({
         <div className="step-body setup-body">
           <div className="step-highlight">
             {content.highlight}
-          </div><br/><br/>
+          </div><br /><br />
 
           <a
             className="download-label"
@@ -912,7 +703,7 @@ function PageBody({
         return <SubmittedMemes />;
       }
 
-      return <MemeGallery />;
+      return <MemeGallery teamSize={teamSize} />;
 
     case "terminal":
       return (
@@ -968,7 +759,7 @@ export default function ContentPage({
   onNext,
   onThemeChange,
   onMemesClick,
-  memesLocked,
+  maxAllowedPage,
   teamSize,
   teamMemberNumber,
   onTeamNameChange,
@@ -978,53 +769,21 @@ export default function ContentPage({
 }: ContentPageProps) {
   const page = pages[pageIndex - 1];
 
-  const [unlocked, setUnlocked] =
-    useState(!LOCK_ENABLED);
-
-  const [checkingLock, setCheckingLock] =
-    useState(LOCK_ENABLED);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    if (!LOCK_ENABLED) {
-      setUnlocked(true);
-      setCheckingLock(false);
-      return;
-    }
-
-    setCheckingLock(true);
-
-    isUnlockAvailable().then((available) => {
-      if (!cancelled) {
-        setUnlocked(available);
-        setCheckingLock(false);
-      }
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [pageIndex]);
-
-  const locked =
-    LOCK_ENABLED &&
-    pageIndex > 3 &&
-    (!unlocked || checkingLock);
+  const locked = pageIndex > maxAllowedPage;
 
   if (!page) {
     return null;
   }
 
-  if (locked && !checkingLock) {
+  if (locked) {
     return (
       <section className="page content-page">
         <div className="content-card">
           <Navbar
             onThemeChange={onThemeChange}
             onMemesClick={onMemesClick}
-            memesLocked={memesLocked}
-            />
+            maxAllowedPage={maxAllowedPage}
+          />
 
           <LockedPage
             onPrevious={onPrevious}
@@ -1043,10 +802,10 @@ export default function ContentPage({
               {String(pages.length).padStart(2, "")}
             </div>
 
-            <ArrowButton
-              direction="right"
-              onClick={onNext}
-            />
+            {/* Next button is hidden when locked */}
+            <div className="page-arrow page-arrow-placeholder" style={{ visibility: "hidden" }}>
+              →
+            </div>
           </div>
         </div>
       </section>
@@ -1057,10 +816,10 @@ export default function ContentPage({
     <section className="page content-page">
       <div className="content-card">
         <Navbar
-            onThemeChange={onThemeChange}
-            onMemesClick={onMemesClick}
-            memesLocked={memesLocked}
-            />
+          onThemeChange={onThemeChange}
+          onMemesClick={onMemesClick}
+          maxAllowedPage={maxAllowedPage}
+        />
 
         {showLockMessage && (
           <div className="lock-toast">

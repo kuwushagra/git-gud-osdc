@@ -16,6 +16,7 @@ import Ticker from "./components/Ticker";
 import ContentPage from "./components/ContentPage";
 
 import { pages } from "./pages";
+import { API_BASE_URL } from "./config";
 
 import gitgudheader from "./assets/images/gitgudheader.png";
 import octocat from "./assets/images/octocat.png";
@@ -61,11 +62,6 @@ const STORAGE_KEYS = {
   teamMember: "gitgud-team-member",
   themeIndex: "gitgud-theme-index",
 };
-
-const LOCKED_AFTER_PAGE = 9;
-
-const UNLOCK_FILE_URL =
-  "https://raw.githubusercontent.com/kartinul/GitGud/main/isUnlock";
 
 function readStorageString(key: string): string {
   try {
@@ -162,19 +158,29 @@ function saveStorageValue(
   }
 }
 
-async function checkUnlockFile(): Promise<boolean> {
+async function fetchProgress(): Promise<number> {
   try {
     const response = await fetch(
-      `${UNLOCK_FILE_URL}?v=${Date.now()}`,
+      `${API_BASE_URL}/progress/get`,
       {
         cache: "no-store",
       },
     );
 
-    return response.ok;
-  } catch {
-    // Fail closed.
-    return false;
+    if (response.ok) {
+      const data = await response.json();
+      if (data && typeof data.progress === "number") {
+        return data.progress;
+      }
+      if (typeof data === "number") {
+        return data; // Just in case it ever returns primitive
+      }
+    }
+    return 0;
+  } catch (error) {
+    console.error("fetchProgress failed (likely CORS or Network Error):", error);
+    // Fail closed, return 0
+    return 0;
   }
 }
 
@@ -202,14 +208,24 @@ function App() {
       readTeamMember(),
     );
 
-  const [isUnlocked, setIsUnlocked] =
-    useState(false);
+  const [maxAllowedPage, setMaxAllowedPage] =
+    useState(1);
 
   const [showLockMessage, setShowLockMessage] =
     useState(false);
 
   const lockMessageTimer =
     useRef<number | null>(null);
+
+  /*
+   * If the site becomes locked down while somebody
+   * is already beyond the max allowed page, bring them back.
+   */
+  useEffect(() => {
+    if (currentPage > maxAllowedPage + 1) {
+      setCurrentPage(maxAllowedPage);
+    }
+  }, [maxAllowedPage, currentPage]);
 
   /*
    * Persist the selected theme so that refreshing
@@ -223,62 +239,28 @@ function App() {
   }, [themeIndex]);
 
   /*
-   * Check whether the source repository contains
-   * the root-level `isUnlock` file.
-   *
-   * The app fails closed:
-   * no file / request failure = locked.
+   * Check the current progress on initial load.
    */
   useEffect(() => {
     let cancelled = false;
 
     const checkStatus = async () => {
-      const unlocked =
-        await checkUnlockFile();
+      const progress = await fetchProgress();
 
       if (cancelled) {
         return;
       }
 
-      setIsUnlocked(unlocked);
-
-      if (unlocked) {
-        setShowLockMessage(false);
-      }
+      // Directly use progress as 1-based index max allowed page
+      setMaxAllowedPage(progress);
     };
 
     checkStatus();
 
-    /*
-     * Recheck periodically so we can create
-     * `isUnlock` without requiring every user
-     * to refresh.
-     */
-    const intervalId =
-      window.setInterval(
-        checkStatus,
-        30000,
-      );
-
     return () => {
       cancelled = true;
-      window.clearInterval(intervalId);
     };
   }, []);
-
-  /*
-   * If the site becomes locked while somebody
-   * is already beyond Step 3, bring them back
-   * to the last accessible page.
-   */
-  useEffect(() => {
-    if (
-      !isUnlocked &&
-      currentPage > LOCKED_AFTER_PAGE
-    ) {
-      setCurrentPage(LOCKED_AFTER_PAGE);
-    }
-  }, [isUnlocked, currentPage]);
 
   useEffect(() => {
     return () => {
@@ -316,32 +298,32 @@ function App() {
       }, 4500);
   };
 
-  const goToPage = (page: number) => {
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const goToPage = async (page: number) => {
+    if (isNavigating) return;
+
     const nextPage =
       page > pages.length
         ? 1
         : Math.max(0, page);
 
-    /*
-     * Pages 1 through 9 are always available.
-     * Everything after that requires isUnlock.
-     */
-    if (
-      !isUnlocked &&
-      nextPage > LOCKED_AFTER_PAGE
-    ) {
-      setCurrentPage(
-        LOCKED_AFTER_PAGE,
-      );
+    if (nextPage > currentPage) {
+      setIsNavigating(true);
 
-      showLockedMessage();
+      try {
+        // Check progress only when navigating forward
+        const progress = await fetchProgress();
+        setMaxAllowedPage(progress);
 
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-
-      return;
+        if (nextPage > progress + 1) {
+          // If jumping too far (like clicking Memes in nav), show toast and don't navigate
+          showLockedMessage();
+          return;
+        }
+      } finally {
+        setIsNavigating(false);
+      }
     }
 
     setCurrentPage(nextPage);
@@ -443,13 +425,21 @@ function App() {
     <div
       className={`website ${themes[themeIndex]}`}
     >
+      {isNavigating && (
+        <div className="navigation-overlay">
+          <div className="spinner"></div>
+          LOADING...
+        </div>
+      )}
+
       {currentPage === 0 ? (
         <HomePage
           onNext={() => goToPage(1)}
           onThemeChange={changeTheme}
           onMemesClick={() => goToPage(9)}
-          memesLocked={!isUnlocked}
-/>
+          maxAllowedPage={maxAllowedPage}
+          showLockMessage={showLockMessage}
+        />
       ) : (
         <ContentPage
           pageIndex={currentPage}
@@ -461,7 +451,7 @@ function App() {
           }
           onThemeChange={changeTheme}
           onMemesClick={() => goToPage(9)}
-          memesLocked={!isUnlocked}
+          maxAllowedPage={maxAllowedPage}
           teamName={teamName}
           teamSize={teamSize}
           teamMemberNumber={teamMemberNumber}
@@ -479,12 +469,14 @@ function HomePage({
   onNext,
   onThemeChange,
   onMemesClick,
-  memesLocked,
+  maxAllowedPage,
+  showLockMessage,
 }: {
   onNext: () => void;
   onThemeChange: () => void;
   onMemesClick: () => void;
-  memesLocked: boolean;
+  maxAllowedPage: number;
+  showLockMessage: boolean;
 }) {
   return (
     <section className="page home-page">
@@ -506,8 +498,15 @@ function HomePage({
         <Navbar
           onThemeChange={onThemeChange}
           onMemesClick={onMemesClick}
-          memesLocked={memesLocked}
+          maxAllowedPage={maxAllowedPage}
         />
+
+        {showLockMessage && (
+          <div className="lock-toast">
+            THIS AREA IS NOT YET AVAILABLE
+            FOR EXPLORATION!
+          </div>
+        )}
 
         <main>
           <section className="hero wenoselect">
