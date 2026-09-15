@@ -695,24 +695,45 @@ pointer-events: auto;
 transform: translateY(0);
 }
 
-.navitems a {
-display: block;
-padding: 13px 14px;
-border-bottom: 2px solid var(--black-color);
-font-size: 14px;
-font-weight: 800;
+.navitems a,
+.nav-link-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 13px 14px;
+  border: 0;
+  border-bottom: 2px solid var(--black-color);
+  font-size: 14px;
+  font-weight: 800;
+  text-align: left;
 }
 
 .navitems a:last-child {
-border-bottom: 0;
+  border-bottom: 0;
+}
+
+.nav-link-button {
+  justify-content: flex-start;
+  color: inherit;
+  background: transparent;
+  border-radius: 0;
 }
 
 .navitems a::after {
-display: none;
+  display: none;
 }
 
-.navitems a:hover {
-background: var(--accent-color);
+.navitems a:hover,
+.nav-link-button:hover {
+  color: var(--black-color);
+  background: var(--accent-color);
+}
+
+.nav-lock {
+  margin-left: 6px;
+  font-size: 0.75em;
+  line-height: 1;
 }
 
 .hero {
