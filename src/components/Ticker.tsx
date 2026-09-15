@@ -2,10 +2,10 @@ import { useEffect, useRef } from "react";
 
 const words = [
   "OSDC",
-  "PIZZA",
-  "CODE",
-  "MEMES",
-  "LINUX",
+  "Pizza",
+  "Code",
+  "Memes",
+  "Linux",
   "LARP",
 ];
 
