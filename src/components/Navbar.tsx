@@ -1,20 +1,5 @@
 import { useState } from "react";
 
-const links = [
-{
-name: "Home",
-url: "/",
-},
-{
-name: "Socials",
-url: "https://links.osdc.dev",
-},
-{
-name: "Repo",
-url: "https://github.com/kuwushagra/git-gud-osdc",
-},
-];
-
 type NavbarProps = {
 onThemeChange: () => void;
 onMemesClick: () => void;

@@ -969,7 +969,6 @@ export default function ContentPage({
   onThemeChange,
   onMemesClick,
   memesLocked,
-  teamName,
   teamSize,
   teamMemberNumber,
   onTeamNameChange,
