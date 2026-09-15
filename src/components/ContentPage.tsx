@@ -259,9 +259,14 @@ function MemeGallery({
                 selectTemplate(template.id)
               }
               aria-pressed={isSelected}
-              title={`Select ${template.name} (${template.id})`}
             >
               <div className="meme-card-image-wrap">
+                {isSelected && (
+                  <span className="meme-selected-badge">
+                    SELECTED ✓
+                  </span>
+                )}
+
                 <img
                   className="meme-image"
                   src={template.image}
@@ -272,12 +277,6 @@ function MemeGallery({
                     e.currentTarget.src = template.remoteUrl;
                   }}
                 />
-
-                {isSelected && (
-                  <span className="meme-selected-badge">
-                    SELECTED ✓
-                  </span>
-                )}
 
                 <span className="meme-card-name">
                   {template.name}
