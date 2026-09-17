@@ -699,7 +699,6 @@ function HomePage({
   onThemeChange: () => void;
   onThemeSelect: (index: number) => void;
   themeIndex: number;
-  themes: string[];
   scrollFormat: "horizontal" | "vertical";
   onScrollFormatChange: (
     format: "horizontal" | "vertical",
