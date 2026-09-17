@@ -2,7 +2,7 @@ import "./App.css";
 import {
   motion,
   type Variants,
-} from "motion/react";randomchangetostopdeploy
+} from "motion/react";
 import {
   useEffect,
   useRef,
