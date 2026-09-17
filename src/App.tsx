@@ -620,7 +620,6 @@ function App() {
           onThemeChange={changeTheme}
           onThemeSelect={selectTheme}
           themeIndex={themeIndex}
-          themes={themes}
           scrollFormat={scrollFormat}
           onScrollFormatChange={
             changeScrollFormat
@@ -689,7 +688,6 @@ function HomePage({
   onThemeChange,
   onThemeSelect,
   themeIndex,
-  themes,
   scrollFormat,
   onScrollFormatChange,
   onResetExperience,
