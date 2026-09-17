@@ -140,7 +140,7 @@ export const pages: Page[] = [
         {
           label: "Pull origin",
           code:
-            "git pull orogin main",
+            "git pull origin main",
         },
         {
           label: "Create submissions folder",
