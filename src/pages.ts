@@ -134,7 +134,7 @@ export const pages: Page[] = [
           code: "git init",
         },
         {
-          label: "Add origin",
+          label: "Pull Origin",
           code: "git pull origin main",
         },
         {
