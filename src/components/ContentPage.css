@@ -646,6 +646,16 @@
   background: var(--accent-color);
 }
 
+.pr-image {
+  display: block;
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+
 /* =========================================================
    Meme template selector
    ========================================================= */

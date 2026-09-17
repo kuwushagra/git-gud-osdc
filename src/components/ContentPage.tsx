@@ -1002,14 +1002,30 @@ function PageBody({
           </a>
 
           <Terminal
-            steps={content.steps.map((step) =>
-              step.label === "Add origin"
-                ? {
-                    ...step,
-                    code: `git remote add origin https://github.com/${githubId}/GitGud.git`,
-                  }
-                : step,
-            )}
+            steps={content.steps.map((step) => {
+              if (
+                step.label ===
+                "Create team folder"
+              ) {
+                return {
+                  ...step,
+                  code: `mkdir ${
+                    teamName || "<teamname folder>"
+                  } && cd ${
+                    teamName || "<teamname folder>"
+                  }`,
+                };
+              }
+
+              if (step.label === "Add origin") {
+                return {
+                  ...step,
+                  code: `git remote add origin https://github.com/${githubId}/GitGud.git`,
+                };
+              }
+
+              return step;
+            })}
           />
         </div>
       );
@@ -1121,6 +1137,18 @@ function PageBody({
         </div>
       );
 
+     case "image":
+      return (
+        <div className="step-body">
+          <img
+            src={content.image}
+            alt={content.alt}
+            className="pr-image"
+            draggable={false}
+          />
+        </div>
+      );
+      
     case "memes":
       if (pageIndex === pages.length) {
         return (

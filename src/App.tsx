@@ -162,9 +162,9 @@ function readScrollFormat(): "horizontal" | "vertical" {
     STORAGE_KEYS.scrollFormat,
   );
 
-  return value === "vertical"
-    ? "vertical"
-    : "horizontal";
+  return value === "horizontal"
+    ? "horizontal"
+    : "vertical";
 }
 
 function readCurrentPage(): number {
@@ -370,7 +370,7 @@ function App() {
 
     setCurrentPage(0);
     setThemeIndex(4);
-    setScrollFormat("horizontal");
+    setScrollFormat("vertical");
     setGithubId("");
     setEmailId("");
     setTeamName("");

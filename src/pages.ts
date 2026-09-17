@@ -48,6 +48,11 @@ export type PageContent =
       steps: TerminalStep[];
     }
   | {
+      kind: "image";
+      image: string;
+      alt: string;
+    }
+  | {
       kind: "memes";
     }
   | {
@@ -121,12 +126,8 @@ export const pages: Page[] = [
       },
       steps: [
         {
-          label: "Create a new folder",
-          code: "mkdir GitGud",
-        },
-        {
-          label: "Move into the folder",
-          code: "cd GitGud",
+          label: "Create a new folder * move into it",
+          code: "mkdir GitGud && cd GitGud",
         },
         {
           label: "Initialize the repository",
@@ -134,8 +135,21 @@ export const pages: Page[] = [
         },
         {
           label: "Add origin",
+          code: "git pull origin main",
+        },
+        {
+          label: "Add origin",
           code:
             "git remote add origin https://github.com/YOUR_GITHUB_ID/GitGud.git",
+        },
+        {
+          label: "Create submissions folder",
+          code: "mkdir submissions && cd submissions",
+        },
+        {
+          label: "Create team folder",
+          code:
+            "mkdir <teamname folder> && cd <teamname folder>",
         },
       ],
     },
@@ -190,7 +204,7 @@ export const pages: Page[] = [
     content: {
       kind: "terminal",
       note:
-        'Note: Replace "enter_caption" with your actual caption in quotes. Ex: "Tung Tung Tung Tung Tung Tung Sahur"',
+        'Note: Replace "enter_caption" with your actual caption in quotes. Ex: "Tung Tung Tung Tung Tung Tung Tung Sahur"',
       steps: [
         {
           label: "Create your meme file",
@@ -208,7 +222,7 @@ export const pages: Page[] = [
 
   {
     label: "Step Nine",
-    title: "CHANGE BRANCH",
+    title: "Add & Push",
     content: {
       kind: "terminal",
       steps: [
@@ -225,6 +239,17 @@ export const pages: Page[] = [
           code: "git push origin memes",
         },
       ],
+    },
+  },
+
+  {
+    label: "Step Ten",
+    title: "OPEN A PULL REQUEST",
+    content: {
+      kind: "image",
+      image:
+        "https://opensource.com/sites/default/files/uploads/open-a-pull-request_crop.png",
+      alt: "How to open a pull request on GitHub",
     },
   },
 
