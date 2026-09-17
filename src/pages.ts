@@ -122,7 +122,7 @@ export const pages: Page[] = [
         "Go to the PROJECT'S PAGE ON GITHUB and click the FORK button.",
       button: {
         text: "CLICK HERE TO GO TO GITHUB REPO",
-        href: "https://github.com/kartinul/GitGud",
+        href: "https://github.com/osdc/GitGud",
       },
       steps: [
         {
@@ -134,13 +134,13 @@ export const pages: Page[] = [
           code: "git init",
         },
         {
-          label: "Pull Origin",
-          code: "git pull origin main",
+          label: "Add Origin",
+          code: "git remote add origin http://github.com/YOUR_GITHUB_ID/GitGud.git",
         },
         {
-          label: "Add origin",
+          label: "Pull origin",
           code:
-            "git remote add origin https://github.com/YOUR_GITHUB_ID/GitGud.git",
+            "git pull orogin main",
         },
         {
           label: "Create submissions folder",
