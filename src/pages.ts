@@ -43,6 +43,11 @@ export type PageContent =
       image: string;
     }
   | {
+      kind: "branch-info";
+      explanation: string;
+      steps: TerminalStep[];
+    }
+  | {
       kind: "memes";
     }
   | {
@@ -69,6 +74,7 @@ export const pages: Page[] = [
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn8vD2_oyPoBWtB12cSR0vcNMPaNimA80n2WVILpwWyA&s=10",
     },
   },
+
   {
     label: "Step Two",
     title: "How will you be known?",
@@ -76,6 +82,7 @@ export const pages: Page[] = [
       kind: "identity",
     },
   },
+
   {
     label: "Step Three",
     title: "SETUP GIT",
@@ -100,6 +107,7 @@ export const pages: Page[] = [
       ],
     },
   },
+
   {
     label: "Step Four",
     title: "FORK",
@@ -132,6 +140,7 @@ export const pages: Page[] = [
       ],
     },
   },
+
   {
     label: "Step Five",
     title: "SELECT NO. OF MEMBERS\nIN YOUR TEAM",
@@ -140,6 +149,7 @@ export const pages: Page[] = [
       choices: ["1", "2", "3"],
     },
   },
+
   {
     label: "Step Six",
     title: "WHICH TEAM MEMBER\nARE YOU?",
@@ -149,6 +159,7 @@ export const pages: Page[] = [
       choices: [],
     },
   },
+
   {
     label: "Choose your template!",
     title: "MEMES AVAILABLE:",
@@ -156,13 +167,30 @@ export const pages: Page[] = [
       kind: "memes",
     },
   },
+
   {
     label: "Step Seven",
+    title: "WHAT IS A BRANCH?",
+    content: {
+      kind: "branch-info",
+      explanation:
+        "A branch is a separate version of your project where you can make changes without affecting the main code. For GitGud, you'll use the memes branch to add and push your meme.",
+      steps: [
+        {
+          label: "Create and switch to the memes branch",
+          code: "git checkout -b memes",
+        },
+      ],
+    },
+  },
+
+  {
+    label: "Step Eight",
     title: "ADD YOUR CAPTION",
     content: {
       kind: "terminal",
       note:
-        'Note: Replace "<enter_caption>" with your actual caption in quotes. Ex: "Tung Tung Tung Tung Tung Tung Sahur"',
+        'Note: Replace "enter_caption" with your actual caption in quotes. Ex: "Tung Tung Tung Tung Tung Tung Sahur"',
       steps: [
         {
           label: "Create your meme file",
@@ -177,16 +205,13 @@ export const pages: Page[] = [
       ],
     },
   },
+
   {
-    label: "Step Eight",
+    label: "Step Nine",
     title: "CHANGE BRANCH",
     content: {
       kind: "terminal",
       steps: [
-        {
-          label: "Change branch",
-          code: "git checkout -b memes",
-        },
         {
           label: "Add file",
           code: "git add .",
@@ -202,6 +227,7 @@ export const pages: Page[] = [
       ],
     },
   },
+
   {
     label: "You did it!",
     title: "MEMES PUSHED",

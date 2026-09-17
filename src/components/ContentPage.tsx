@@ -1110,6 +1110,17 @@ function PageBody({
         </div>
       );
 
+    case "branch-info":
+      return (
+        <div className="step-body push-body">
+          <div className="step-highlight">
+            {content.explanation}
+          </div>
+
+          <Terminal steps={content.steps} />
+        </div>
+      );
+
     case "memes":
       if (pageIndex === pages.length) {
         return (
@@ -1127,7 +1138,7 @@ function PageBody({
       );
 
     case "terminal": {
-      const isCaptionPage = pageIndex === 8;
+      const isCaptionPage = pageIndex === 9;
 
       if (!isCaptionPage) {
         return (
@@ -1143,10 +1154,21 @@ function PageBody({
       const memberNumber =
         teamMemberNumber ?? 1;
 
+      const templates = getMemesForTeamSize(
+        teamSize,
+      );
+
+      const selectedMeme = templates.find(
+        (template) =>
+          template.id === selectedTemplate,
+      );
+
+      const captionCount =
+        selectedMeme?.captions.length ?? 1;
+
       const pageEightSteps: TerminalStep[] =
-        content.steps.map((step) => ({
-          ...step,
-          code: step.code
+        content.steps.flatMap((step) => {
+          const replacedCode = step.code
             .replace(
               /<selected_template>/g,
               selectedTemplate ||
@@ -1155,8 +1177,46 @@ function PageBody({
             .replace(
               /<team_member_number>/g,
               String(memberNumber),
-            ),
-        }));
+            );
+
+          if (
+            step.label !==
+            "Create your caption file"
+          ) {
+            return [
+              {
+                ...step,
+                code: replacedCode,
+              },
+            ];
+          }
+
+          if (teamSize === 1) {
+            return Array.from(
+              { length: captionCount },
+              (_, index) => ({
+                ...step,
+                label:
+                  captionCount > 1
+                    ? `Create your caption file ${
+                        index + 1
+                      }`
+                    : "Create your caption file",
+                code: `echo "enter_caption" > caption${
+                  index + 1
+                }.txt`,
+              }),
+            );
+          }
+
+          return [
+            {
+              ...step,
+              label: `Create your caption file ${memberNumber}`,
+              code: `echo "enter_caption" > caption${memberNumber}.txt`,
+            },
+          ];
+        });
 
       return (
         <div className="step-body push-body">
