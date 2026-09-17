@@ -653,6 +653,8 @@
   height: auto;
   margin: 0 auto;
   object-fit: contain;
+  border: 2px solid var(--black-color);
+  box-shadow: 5px 5px 0 var(--black-color);
 }
 
 
