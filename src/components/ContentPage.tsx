@@ -1229,7 +1229,6 @@ export default function ContentPage({
   onThemeChange,
   onThemeSelect,
   themeIndex,
-  themes,
   scrollFormat,
   onScrollFormatChange,
   onResetExperience,
