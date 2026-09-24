@@ -168,6 +168,10 @@ function readScrollFormat(): "horizontal" | "vertical" {
 }
 
 function readCurrentPage(): number {
+  if (window.location.pathname.replace(/\/$/, "") === "/memes") {
+    return pages.length;
+  }
+
   const value = readStorageNumber(
     STORAGE_KEYS.currentPage,
   );
@@ -292,6 +296,36 @@ function App() {
   }, [currentPage]);
 
   useEffect(() => {
+    window.history.replaceState(
+      { page: currentPage },
+      "",
+      window.location.href,
+    );
+
+    const handlePopState = (event: PopStateEvent) => {
+      const page = event.state?.page;
+      const isMemesPath =
+        window.location.pathname.replace(/\/$/, "") === "/memes";
+
+      setCurrentPage(
+        isMemesPath
+          ? pages.length
+          : typeof page === "number" &&
+              page >= 0 &&
+              page < pages.length
+            ? page
+            : 0,
+      );
+      setShowLockMessage(false);
+      setIsNavigating(false);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+    // Capture the initial page once; navigation updates history explicitly.
+  }, []);
+
+  useEffect(() => {
     saveStorageValue(
       STORAGE_KEYS.themeIndex,
       String(themeIndex),
@@ -369,6 +403,7 @@ function App() {
     } catch {}
 
     setCurrentPage(0);
+    updatePageUrl(0);
     setThemeIndex(4);
     setScrollFormat("vertical");
     setGithubId("");
@@ -421,11 +456,22 @@ function App() {
     setIsNavigating(false);
     setShowLockMessage(false);
     setCurrentPage(0);
+    updatePageUrl(0);
 
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
+  };
+
+  const updatePageUrl = (page: number) => {
+    const path = page === pages.length ? "/memes" : "/";
+    const method =
+      window.location.pathname === path
+        ? "replaceState"
+        : "pushState";
+
+    window.history[method]({ page }, "", path);
   };
 
   const goToPage = async (page: number) => {
@@ -466,6 +512,7 @@ function App() {
     }
 
     setCurrentPage(nextPage);
+    updatePageUrl(nextPage);
     setShowLockMessage(false);
 
     window.scrollTo({
